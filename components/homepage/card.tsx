@@ -5,42 +5,8 @@ import { IncomeButton } from "./incomebar";
 import { ExpenseBar } from "./expensebar";
 
 export default function Card() {
-  const [more, setMore] = useState(false);
-  const [expense, setExpense] = useState(false);
 
-  const [gaveMoney, setGaveMoney] = useState("");
-  const [amount, setAmount] = useState("");
-  const [addmoney, setAddMoney] = useState(false);
 
-  const [wherespent, setWhereSpent] = useState("");
-  const [spent, setSpent] = useState("");
-  const [addExpense, setAddExpense] = useState(false);
-
-  const handleMore = () => {
-    setMore(!more);
-  };
-
-  const sendMoney = () => {
-    setAddMoney(true);
-    alert(`You got Rs. ${amount} from ${gaveMoney}`);
-    setGaveMoney("");
-    setAmount("");
-    setAddMoney(false);
-    setMore(false);
-  };
-
-  const sendExpense = () => {
-    setAddExpense(true);
-    alert(`You spent Rs. ${spent} for ${wherespent}`);
-    setWhereSpent("");
-    setSpent("");
-    setAddExpense(false);
-    setExpense(false);
-  };
-
-  const handleExpense = () => {
-    setExpense(!expense);
-  };
 
   return (
     <div className="border-slate-400-500 rounded-lg border-2 p-4 dark:border-slate-400">
