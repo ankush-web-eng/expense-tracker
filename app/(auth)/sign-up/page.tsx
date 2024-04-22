@@ -24,8 +24,6 @@ import { signUpSchema } from '@/schemas/signUpSchema';
 
 export default function SignUpForm() {
   const [username, setUsername] = useState('');
-  const [usernameMessage, setUsernameMessage] = useState('');
-  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
@@ -97,18 +95,6 @@ export default function SignUpForm() {
                       setUsername(e.target.value);
                     }}
                   />
-                  {isCheckingUsername && <Loader2 className="animate-spin" />}
-                  {!isCheckingUsername && usernameMessage && (
-                    <p
-                      className={`text-sm ${
-                        usernameMessage === 'Username is unique'
-                        ? 'text-green-500'
-                          : 'text-red-500'
-                      }`}
-                    >
-                      {usernameMessage}
-                    </p>
-                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -162,26 +148,3 @@ export default function SignUpForm() {
   );
 }
 
-
-  //   useEffect(() => {
-  //     const checkUsernameUnique = async () => {
-  //       if (debouncedUsername) {
-  //         setIsCheckingUsername(true);
-  //         setUsernameMessage(''); // Reset message
-  //         try {
-  //           const response = await axios.get<ApiResponse>(
-  //             `/api/check-username-unique?username=${debouncedUsername}`
-  //           );
-  //           setUsernameMessage(response.data.message);
-  //         } catch (error) {
-  //           const axiosError = error as AxiosError<ApiResponse>;
-  //           setUsernameMessage(
-  //             axiosError.response?.data.message ?? 'Error checking username'
-  //           );
-  //         } finally {
-  //           setIsCheckingUsername(false);
-  //         }
-  //       }
-  //     };
-  //     checkUsernameUnique();
-  //   }, [debouncedUsername]);

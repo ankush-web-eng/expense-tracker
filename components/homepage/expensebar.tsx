@@ -23,15 +23,16 @@ export function ExpenseBar() {
   const [source, setSource] = useState("");
   const [amount, setAmount] = useState("");
 
-  const expenseData = expenseSchema.parse({
+  const { data: session } = useSession();
+  const username = session?.user?.username;
+
+  const expenseData = {
     username: username,
     source,
     amount: parseInt(amount),
-  });
+  };
 
   const { toast } = useToast();
-  const { data: session } = useSession();
-  var username = session?.user?.username;
 
   const handleSubmit = async () => {
     try {
@@ -47,6 +48,8 @@ export function ExpenseBar() {
       });
 
       setIsSubmitting(false);
+      setSource("");
+      setAmount("");
     } catch (error) {
       console.error("Error during sign-up:", error);
 

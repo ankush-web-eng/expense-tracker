@@ -1,34 +1,49 @@
-"use client"
+"use client";
 
-import Navbar from "@/components/NavBar"
-import Expense from "@/components/expense"
-import { useEffect, useState } from "react"
+import Navbar from "@/components/NavBar";
+import Expense from "@/components/expense";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+interface Expense {
+  source: string;
+  amount: number;
+  date: string;
+}
 
 export default function Page() {
+  const [expenses, setExpenses] = useState<Expense[] | null>(null);
 
-    const [mounted, setMounted] = useState(false)
+  const fetchExpenses = async () => {
+    try {
+      const response = await axios.get("/api/get-expense");
+      setExpenses(response.data.message);
+    } catch (error) {
+      console.log(error);
+      alert("Failed to fetch expenses");
+    }
+  };
 
-    useEffect(() => {
-        setMounted(true)
-    }, [])
+  const [mounted, setMounted] = useState(false);
 
-    if (!mounted) return null
+  useEffect(() => {
+    fetchExpenses();
+    setMounted(true);
+  }, []);
 
-    return (
-        <div className="h-screen w-screen flex-col">
-            <Navbar />
-            <div className=" flex justify-center">
-                <div className="flex flex-col gap-4">
-                <Expense />
-                <Expense />
-                <Expense />
-                <Expense />
-                <Expense />
-                <Expense />
-                <Expense />
-                </div>
-            </div>
-            
+  if (!mounted) return null;
+
+  return (
+    <div className="h-screen w-screen flex-col">
+      <Navbar />
+      <div className=" flex justify-center">
+        <div className="flex flex-col gap-4">
+          {expenses !== null &&
+            expenses?.map((expense, index) => (
+              <Expense key={index}>{expense}</Expense>
+            ))}
         </div>
-    )
+      </div>
+    </div>
+  );
 }

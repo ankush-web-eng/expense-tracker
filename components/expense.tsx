@@ -1,15 +1,23 @@
 
-export default function Expense() {
+
+type ExpenseProps = {
+  source : string,
+  amount : number,
+  date : string
+};
+
+export default function Expense({children} : {children: ExpenseProps}) {
   return (
-    <div className="p-4 border rounded-lg w-fit">
+    <div className="p-4 border rounded-lg w-fit flex flex-col">
       <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-800 py-4 px-6 rounded-lg ">
         <div className="flex px-3 ">
             {/* <img src="" alt="" /> */}
-            <span className="text-gray-600">Banana Juice</span>
+            <span className="text-gray-600">{children.source}</span>
         </div>
         <div className="px-6"></div>
-        <span className=" px-3 ">Rs. {100}</span>
+        <span className=" px-3 ">Rs. {children.amount}</span>
       </div>
+      <div>{children.date}</div>
     </div>
   );
 }

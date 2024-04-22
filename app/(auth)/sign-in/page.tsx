@@ -17,6 +17,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { signInSchema } from '@/schemas/signInSchema';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 export default function SignInForm() {
   const router = useRouter();
@@ -29,22 +31,27 @@ export default function SignInForm() {
     },
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { toast } = useToast();
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsSubmitting(true);
     const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
       password: data.password,
     });
-
+    
     if (result?.error) {
       if (result.error === 'CredentialsSignin') {
+        alert('Login failed');
         toast({
           title: 'Login Failed',
           description: 'Incorrect username or password',
           variant: 'destructive',
         });
       } else {
+        alert('Error in Login')
         toast({
           title: 'Error',
           description: result.error,
@@ -52,6 +59,7 @@ export default function SignInForm() {
         });
       }
     }
+    setIsSubmitting(false);
 
     if (result?.url) {
       router.replace('/dashboard');
@@ -91,7 +99,14 @@ export default function SignInForm() {
                 </FormItem>
               )}
             />
-            <Button className='w-full' type="submit">Sign In</Button>
+            <Button className='w-full' type="submit">{isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                'Sign In'
+              )}</Button>
           </form>
         </Form>
         <div className="text-center mt-4">

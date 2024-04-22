@@ -1,5 +1,4 @@
 import {z} from 'zod'
-import { usernameValidation } from './signUpSchema'
 
 export const incomeSchema = z.object({
     username : z.string(),

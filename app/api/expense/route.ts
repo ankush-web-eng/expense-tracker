@@ -16,6 +16,10 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({success: false, message: "User not found"})
         }
 
+        const expense = user.spent
+        const totolExpense = expense + amount
+
+        user.spent = totolExpense
         user.expense.push({source, amount, date: new Date()} as Expense)
         await user.save()
 
