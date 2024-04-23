@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 interface Expense {
   source: string;
   amount: number;
-  date: string;
+  date: Date;
 }
 
 export default function Page() {
@@ -37,7 +37,7 @@ export default function Page() {
     <div className="h-screen w-screen flex-col">
       <Navbar />
       <div className=" flex justify-center">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 max-w-screen md:max-w-1/2">
           {expenses !== null &&
             expenses?.map((expense, index) => (
               <Expense key={index}>{expense}</Expense>

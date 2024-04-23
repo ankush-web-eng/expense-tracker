@@ -2,6 +2,7 @@ import Connect from "@/lib/dbConenct";
 import UserModel from "@/model/User";
 import { NextRequest, NextResponse } from "next/server";
 import { Expense } from "@/model/User";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: NextRequest) {
 
@@ -11,21 +12,24 @@ export async function POST(req: NextRequest) {
     try {
         const { source, amount, username } = reqBody
 
-        const user = await UserModel.findOne({username})
+        const user = await UserModel.findOne({ username })
         if (!user) {
-            return NextResponse.json({success: false, message: "User not found"})
+            return NextResponse.json({ success: false, message: "User not found" })
         }
 
         const expense = user.spent
         const totolExpense = expense + amount
 
         user.spent = totolExpense
-        user.expense.push({source, amount, date: new Date()} as Expense)
+        user.expense.push({ source, amount, date: new Date() } as Expense)
         await user.save()
 
-        return NextResponse.json({success: true, message: "Expense Saved Successfully"})
+        const path = req.nextUrl.searchParams.get('path') || "expenses"
+        revalidatePath(path)
+
+        return NextResponse.json({ success: true, message: "Expense Saved Successfully" })
 
     } catch (error) {
-        return NextResponse.json({success: false, message: "An Error occured while Saving the Expense. Please try again later."})
+        return NextResponse.json({ success: false, message: "An Error occured while Saving the Expense. Please try again later." })
     }
 }

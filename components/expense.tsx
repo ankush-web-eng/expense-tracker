@@ -3,12 +3,12 @@
 type ExpenseProps = {
   source : string,
   amount : number,
-  date : string
+  date : Date
 };
 
 export default function Expense({children} : {children: ExpenseProps}) {
   return (
-    <div className="p-4 border rounded-lg w-fit flex flex-col">
+    <div className="p-4 border rounded-lg w-fit flex flex-col max-w-full">
       <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-800 py-4 px-6 rounded-lg ">
         <div className="flex px-3 ">
             {/* <img src="" alt="" /> */}
@@ -17,7 +17,7 @@ export default function Expense({children} : {children: ExpenseProps}) {
         <div className="px-6"></div>
         <span className=" px-3 ">Rs. {children.amount}</span>
       </div>
-      <div>{children.date}</div>
+      {/* <div>{children.date.toLocaleDateString()}</div> */}
     </div>
   );
 }

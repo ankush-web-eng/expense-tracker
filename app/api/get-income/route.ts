@@ -4,8 +4,10 @@ import mongoose from 'mongoose';
 import { User } from 'next-auth';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/options';
+import { revalidatePath } from 'next/cache';
+import { NextRequest } from 'next/server';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   await Connect();
   const session = await getServerSession(authOptions);
   const _user: User = session?.user;
@@ -31,6 +33,9 @@ export async function GET(request: Request) {
         { status: 404 }
       );
     }
+
+    const path = request.nextUrl.searchParams.get('path') || "/income"
+    revalidatePath(path)
 
     return Response.json(
       { message: user[0].income },
