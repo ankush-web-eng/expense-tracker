@@ -8,8 +8,8 @@ type ExpenseProps = {
 
 export default function Expense({children} : {children: ExpenseProps}) {
   return (
-    <div className="p-4 border rounded-lg w-fit flex flex-col max-w-full">
-      <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-800 py-4 px-6 rounded-lg ">
+    <div className="p-4 rounded-lg w-fit flex flex-col max-w-full">
+      <div className="flex drop-shadow-2xl items-center justify-between bg-slate-100 dark:bg-slate-800 py-4 px-6 rounded-lg ">
         <div className="flex px-3 ">
             {/* <img src="" alt="" /> */}
             <span className="text-gray-600">{children.source}</span>

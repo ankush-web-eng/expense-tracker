@@ -25,6 +25,7 @@ import { signUpSchema } from '@/schemas/signUpSchema';
 export default function SignUpForm() {
   const [username, setUsername] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState('');
 
   const router = useRouter();
   const { toast } = useToast();
@@ -49,7 +50,7 @@ export default function SignUpForm() {
         // description: 'Please verify your email address to continue',
       });
 
-      router.replace(`/verify/${username}`);
+      router.replace(`/verify/${email}`);
 
       setIsSubmitting(false);
     } catch (error) {
@@ -105,8 +106,12 @@ export default function SignUpForm() {
               render={({ field }) => (
                   <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <Input {...field} name="email" />
-                  <p className='text-muted text-gray-400 text-sm'>We will send you a verification code</p>
+                  <Input {...field}
+                    onChange={(e) => {
+                        field.onChange(e);
+                      setEmail(e.target.value);
+                    }} name="email" />
+                  <p className='text-muted text-gray-700 text-sm'>We will send you a verification code</p>
                   <FormMessage />
                 </FormItem>
               )}

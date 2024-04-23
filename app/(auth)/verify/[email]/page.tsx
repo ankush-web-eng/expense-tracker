@@ -22,7 +22,7 @@ import { useState } from 'react';
 
 export default function VerifyAccount() {
   const router = useRouter();
-  const params = useParams<{ username: string }>();
+  const params = useParams<{ email: string }>();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -34,7 +34,7 @@ export default function VerifyAccount() {
     try {
       setIsSubmitting(true)
       const response = await axios.post<ApiResponse>(`/api/verify-code`, {
-        username: params.username,
+        email: params.email,
         code: data.code,
       });
 
@@ -64,7 +64,7 @@ export default function VerifyAccount() {
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Verify Your Account {" "} {params.username}
+            Verify Your Account {" "}
           </h1>
           <p className="mb-4">Enter the verification code sent to your email</p>
         </div>

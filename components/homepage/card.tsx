@@ -28,8 +28,8 @@ export default function Card() {
   }, [])
 
   return (
-    <div className="border-slate-400-500 rounded-lg border-2 p-4 dark:border-slate-400">
-      <div className="flex flex-col px-2 space-y-2 md:space-y-5 p-4 rounded-lg bg-slate-100 dark:bg-teal-400 w-fit border-sky-500 dark:border-slate-400 ">
+    <div className="border-slate-400-500 rounded-lg md:border-2 p-4 dark:border-slate-400">
+      <div className="flex flex-col px-2 space-y-2 md:space-y-5 box-shadow-2xl shadow-2xl p-4 rounded-lg bg-slate-100 dark:bg-teal-400 w-fit border-sky-500 dark:border-slate-400 ">
         <div className="flex items-center justify-between w-full">
           <span className="px-8 text-black dark:text-white">Money Left: </span>
           <span className="px-8 text-black dark:text-white">Rs. {left - spent}</span>
