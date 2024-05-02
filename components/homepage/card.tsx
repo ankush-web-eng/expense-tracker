@@ -53,13 +53,13 @@ export default function Card() {
 
         <div className="flex justify-between px-6 gap-2">
           <Link href="/income">
-            <button className="w-fit hover:bg-blue-400 active:bg-teal-700 bg-sky-500 dark:bg-sky-400 rounded-lg p-2 text-white dark:text-black">
+            <button className="w-fit drop-shadow-xl hover:bg-blue-400 active:bg-teal-700 bg-sky-500 dark:bg-sky-400 rounded-lg p-2 text-white dark:text-black">
               Income History
             </button>
           </Link>
 
           <Link href="/expenses">
-            <button className="w-fit hover:bg-blue-400 active:bg-teal-700 bg-sky-500 dark:bg-sky-400  rounded-lg p-2 text-white dark:text-black">
+            <button className="w-fit drop-shadow-xl hover:bg-blue-400 active:bg-teal-700 bg-sky-500 dark:bg-sky-400  rounded-lg p-2 text-white dark:text-black">
               Expense History
             </button>
           </Link>
