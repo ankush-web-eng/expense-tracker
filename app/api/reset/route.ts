@@ -10,9 +10,9 @@ export async function POST(req: NextRequest) {
     const reqBody = await req.json()
 
     try {
-        const { username } = reqBody
+        const { email } = reqBody
 
-        const user = await UserModel.findOneAndUpdate({ username }, { left: 0, spent: 0, expense: [], income: [] }, { new: true })
+        const user = await UserModel.findOneAndUpdate({ email }, { left: 0, spent: 0, expense: [], income: [] }, { new: true })
 
         const path = req.nextUrl.searchParams.get('path') || "/dashboard"
         revalidatePath(path)

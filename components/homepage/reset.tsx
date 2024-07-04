@@ -11,14 +11,14 @@ export default function Reset() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {data : session} = useSession();
-  const username = session?.user?.username;
+  const email = session?.user?.email;
 
   const handleReset = async () => {
     const isTrue = confirm("Are you sure you want to reset your data?")
     if(!isTrue) return;
     try {
         setIsSubmitting(true);
-        const response = await axios.post<ApiResponse>("/api/reset", {username});
+        const response = await axios.post<ApiResponse>("/api/reset", {email});
     
         toast({
             title: "Success",

@@ -26,11 +26,11 @@ export function IncomeButton() {
 
 
   const { data: session } = useSession();
-  const username = session?.user?.username;
+  const email = session?.user?.email;
   // console.log(username);
 
   const incomeData = {
-    username: username,
+    email: email,
     source,
     amount: parseInt(amount),
   };

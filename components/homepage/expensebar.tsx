@@ -25,10 +25,10 @@ export function ExpenseBar() {
   const [amount, setAmount] = useState("");
 
   const { data: session } = useSession();
-  const username = session?.user?.username;
+  const email = session?.user?.email;
 
   const expenseData = {
-    username: username,
+    email: email,
     source,
     amount: parseInt(amount),
   };

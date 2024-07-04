@@ -10,9 +10,9 @@ export async function POST(req: NextRequest) {
     const reqBody = await req.json()
 
     try {
-        const { source, amount, username } = reqBody
+        const { source, amount, email } = reqBody
 
-        const user = await UserModel.findOne({ username })
+        const user = await UserModel.findOne({ email })
         if (!user) {
             return NextResponse.json({ success: false, message: "User not found" })
         }
