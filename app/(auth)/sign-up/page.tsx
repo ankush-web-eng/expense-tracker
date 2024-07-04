@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import { ApiResponse } from '@/types/ApiResponse';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { ApiResponse } from "@/types/ApiResponse";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
-import axios, { AxiosError } from 'axios';
-import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { signUpSchema } from '@/schemas/signUpSchema';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import axios, { AxiosError } from "axios";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { signUpSchema } from "@/schemas/signUpSchema";
 
 export default function SignUpForm() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const router = useRouter();
   const { toast } = useToast();
@@ -33,19 +33,18 @@ export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      username: '',
-      email: '',
-      password: '',
+      username: "",
+      email: "",
+      password: "",
     },
   });
 
-  
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await axios.post<ApiResponse>('/api/sign-up', data);
+      const response = await axios.post<ApiResponse>("/api/sign-up", data);
       toast({
-        title: 'Success',
+        title: "Success",
         description: response.data.message,
         // description: 'Please verify your email address to continue',
       });
@@ -54,19 +53,19 @@ export default function SignUpForm() {
 
       setIsSubmitting(false);
     } catch (error) {
-      console.error('Error during sign-up:', error);
+      console.error("Error during sign-up:", error);
 
       const axiosError = error as AxiosError<ApiResponse>;
-      
+
       // Default error message
       let errorMessage = axiosError.response?.data.message;
-      ('There was a problem with your sign-up. Please try again.');
-      
+      ("There was a problem with your sign-up. Please try again.");
+
       toast({
-          title: 'Sign Up Failed',
+        title: "Sign Up Failed",
         description: errorMessage,
-        variant: 'destructive',
-    });
+        variant: "destructive",
+      });
 
       setIsSubmitting(false);
     }
@@ -92,30 +91,35 @@ export default function SignUpForm() {
                   <Input
                     {...field}
                     onChange={(e) => {
-                        field.onChange(e);
+                      field.onChange(e);
                       setUsername(e.target.value);
                     }}
                   />
                   <FormMessage />
                 </FormItem>
               )}
-              />
+            />
             <FormField
               name="email"
               control={form.control}
               render={({ field }) => (
-                  <FormItem>
+                <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <Input {...field}
+                  <Input
+                    {...field}
                     onChange={(e) => {
-                        field.onChange(e);
+                      field.onChange(e);
                       setEmail(e.target.value);
-                    }} name="email" />
-                  <p className='text-muted text-gray-700 text-sm'>We will send you a verification code</p>
+                    }}
+                    name="email"
+                  />
+                  <p className="text-muted text-gray-700 text-sm">
+                    We will send you a verification code
+                  </p>
                   <FormMessage />
                 </FormItem>
               )}
-              />
+            />
 
             <FormField
               name="password"
@@ -128,21 +132,21 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className='w-full' disabled={isSubmitting}>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Please wait
                 </>
               ) : (
-                'Sign Up'
+                "Sign Up"
               )}
             </Button>
           </form>
         </Form>
         <div className="text-center mt-4">
           <p>
-            Already a member?{' '}
+            Already a member?{" "}
             <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
               Sign in
             </Link>
@@ -152,4 +156,3 @@ export default function SignUpForm() {
     </div>
   );
 }
-

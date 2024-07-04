@@ -70,15 +70,16 @@ export async function POST(request: NextRequest) {
       username,
       verifyCode
     );
-    if (!emailResponse.success) {
-      return Response.json(
-        {
-          success: false,
-          message: emailResponse.message,
-        },
-        { status: 500 }
-      );
-    }
+    console.log(emailResponse)
+    // if (!emailResponse.success) {
+    //   return Response.json(
+    //     {
+    //       success: false,
+    //       message: emailResponse.message,
+    //     },
+    //     { status: 500 }
+    //   );
+    // }
 
     // const path = request.nextUrl.searchParams.get("path") || "/sign-up"
     // revalidatePath(path)

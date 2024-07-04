@@ -1,22 +1,31 @@
-import { resend } from "@/lib/resend";
-import VerificationEmail from "@/emails/verificationEmail";
-import { ApiResponse } from '@/types/ApiResponse';
+import { ApiResponse } from "@/types/ApiResponse";
 
-export async function sendVerificationEmail(
-  email: string,
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use `true` for port 465, `false` for all other ports
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
+export async function sendVerificationEmail(email: string,
   username: string,
-  verifyCode: string
-): Promise<ApiResponse> {
+  verifyCode: string): Promise<ApiResponse> {
   try {
-    await resend.emails.send({
-      from: 'Ankush <onboarding@resend.dev>',
+    const info = await transporter.sendMail({
+      from: `"Ankush" <${process.env.EMAIL}>`,
       to: email,
-      subject: 'Expense Tracker - Verify Your Email Address',
-      react: VerificationEmail({ username, otp: verifyCode }),
+      subject: "Expense Tracker - Verify your email",
+      text: `Hello ${username}, Your verification code is ${verifyCode}`,
+      html: `<b>Hello ${username}, Your verification code is ${verifyCode}</b>`,
     });
+
     return { success: true, message: 'Verification email sent successfully.' };
-  } catch (emailError) {
-    console.error('Error sending verification email:', emailError);
+  } catch (error) {
     return { success: false, message: 'Failed to send verification email.' };
   }
 }

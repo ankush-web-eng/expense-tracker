@@ -17,6 +17,7 @@ import { useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function ExpenseBar() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,6 +32,7 @@ export function ExpenseBar() {
     source,
     amount: parseInt(amount),
   };
+  const router = useRouter()
 
   const { toast } = useToast();
 
@@ -50,6 +52,7 @@ export function ExpenseBar() {
       setIsSubmitting(false);
       setSource("");
       setAmount("");
+      router.refresh()
     } catch (error) {
       console.error("Error during sign-up:", error);
 
@@ -60,7 +63,7 @@ export function ExpenseBar() {
       ("There was a problem with your sign-up. Please try again.");
 
       toast({
-        title: "Sign Up Failed",
+        title: "Expense edition Failed",
         description: errorMessage,
         variant: "destructive",
       });

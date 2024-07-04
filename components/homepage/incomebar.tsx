@@ -17,6 +17,7 @@ import axios, { AxiosError } from "axios";
 import { useToast } from "../ui/use-toast";
 import { ApiResponse } from "@/types/ApiResponse";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function IncomeButton() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,6 +36,7 @@ export function IncomeButton() {
   };
 
   const { toast } = useToast();
+  const router = useRouter()
 
   const handleSubmit = async () => {
     try {
@@ -42,13 +44,15 @@ export function IncomeButton() {
       const response = await axios.post<ApiResponse>("/api/income", incomeData);
 
       toast({
-        title: "Success",
+        title: "Added Successfully",
         description: response.data.message,
+        variant : "default"
       });
 
       setIsSubmitting(false);
       setSource("");
       setAmount("");
+      router.refresh()
     } catch (error) {
       console.error("Error during sign-up:", error);
 
@@ -59,7 +63,7 @@ export function IncomeButton() {
       ("There was a problem with your sign-up. Please try again.");
 
       toast({
-        title: "Sign Up Failed",
+        title: "Income addition Failed",
         description: errorMessage,
         variant: "destructive",
       });
