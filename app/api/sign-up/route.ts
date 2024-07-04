@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       return Response.json(
         {
           success: false,
-          message: 'Username is already taken',
+          message: 'Email is already taken',
         },
         { status: 400 }
       );
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         return Response.json(
           {
             success: false,
-            message: 'User already exists with this email',
+            message: 'User already exists. Please login.',
           },
           { status: 400 }
         );
