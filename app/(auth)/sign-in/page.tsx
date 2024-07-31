@@ -58,6 +58,11 @@ export default function SignInForm() {
           variant: 'destructive',
         });
       }
+    } else{
+      toast({
+        title: 'Success',
+        description: 'Login Successful',
+      })
     }
     setIsSubmitting(false);
 

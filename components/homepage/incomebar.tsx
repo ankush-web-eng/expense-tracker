@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
+import { Loader2, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,117 +15,111 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import { incomeSchema } from "@/schemas/incomeSchema";
-import axios, { AxiosError } from "axios";
 import { useToast } from "../ui/use-toast";
 import { ApiResponse } from "@/types/ApiResponse";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export function IncomeButton() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [source, setSource] = useState("");
   const [amount, setAmount] = useState("");
-
+  const [isOpen, setIsOpen] = useState(false);
 
   const { data: session } = useSession();
-  const email = session?.user?.email;
-  // console.log(username);
-
-  const incomeData = {
-    email: email,
-    source,
-    amount: parseInt(amount),
-  };
-
+  const router = useRouter();
   const { toast } = useToast();
-  const router = useRouter()
 
   const handleSubmit = async () => {
+    if (!source || !amount) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setIsSubmitting(true);
-      const response = await axios.post<ApiResponse>("/api/income", incomeData);
+      const response = await axios.post<ApiResponse>("/api/income", {
+        email: session?.user?.email,
+        source,
+        amount: parseInt(amount),
+      });
 
       toast({
-        title: "Added Successfully",
+        title: "Income Added Successfully",
         description: response.data.message,
-        variant : "default"
+        variant: "default",
       });
 
       setIsSubmitting(false);
       setSource("");
       setAmount("");
-      router.refresh()
+      setIsOpen(false);
+      router.refresh();
     } catch (error) {
-      console.error("Error during sign-up:", error);
-
+      console.error("Error adding income:", error);
       const axiosError = error as AxiosError<ApiResponse>;
-
-      // Default error message
-      let errorMessage = axiosError.response?.data.message;
-      ("There was a problem with your sign-up. Please try again.");
-
       toast({
-        title: "Income addition Failed",
-        description: errorMessage,
+        title: "Income Addition Failed",
+        description: axiosError.response?.data.message || "An error occurred. Please try again.",
         variant: "destructive",
       });
-
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Add Income</Button>
+        <Button variant="default" className="bg-green-500 hover:bg-green-600 text-white">
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Add Income
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add Income</DialogTitle>
           <DialogDescription>
-            Track your income by adding a new source of income.
+            Track your income by adding a new source.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
+            <Label htmlFor="source" className="text-right">
               Source
             </Label>
             <Input
-              id="name"
-              //   defaultValue="Pocket Money"
-              className="col-span-3"
-              placeholder="Pocket Money"
+              id="source"
               value={source}
               onChange={(e) => setSource(e.target.value)}
+              placeholder="e.g., Salary"
+              className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              How much?
+            <Label htmlFor="amount" className="text-right">
+              Amount
             </Label>
             <Input
-              id="username"
+              id="amount"
               type="number"
-              placeholder="500"
-              className="col-span-3"
+              placeholder="0"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              className="col-span-3"
             />
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleSubmit} type="submit">
+          <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full bg-green-500 hover:bg-green-600">
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
+                Adding Income...
               </>
             ) : (
-              "Save Changes"
+              "Add Income"
             )}
           </Button>
         </DialogFooter>
