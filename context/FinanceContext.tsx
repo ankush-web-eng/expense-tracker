@@ -1,37 +1,41 @@
 'use client'
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@/model/User";
 import axios from "axios";
 
+interface Expenses {
+  left: number;
+  spent: number;
+}
+
 interface FinanceContextType {
-  user: User | null;
+  expenses:  Expenses | null;
   handleSync: () => void;
 }
 
 const FinanceContext = createContext<FinanceContextType | null>(null);
 
 export const FinanceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [expenses, setExpenses] = useState<Expenses | null>(null);
 
-  const getUser = async () => {
+  const getFinance = async () => {
     try {
-      const response = await axios.get("/api/user");
-      setUser(response.data);
+      const response = await axios.get("/api/get-data");
+      setExpenses(response.data.message);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
   const handleSync = () => {
-    getUser();
+    getFinance();
   };
 
   useEffect(() => {
-    getUser();
+    getFinance();
   }, []);
 
   return (
-    <FinanceContext.Provider value={{ user, handleSync }}>
+    <FinanceContext.Provider value={{ expenses, handleSync }}>
       {children}
     </FinanceContext.Provider>
   );

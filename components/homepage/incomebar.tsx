@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "../ui/use-toast";
 import { ApiResponse } from "@/types/ApiResponse";
+import { useFinance } from "@/context/FinanceContext";
 
 export function IncomeButton() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,6 +28,7 @@ export function IncomeButton() {
   const { data: session } = useSession();
   const router = useRouter();
   const { toast } = useToast();
+  const {handleSync} = useFinance();
 
   const handleSubmit = async () => {
     if (!source || !amount) {
@@ -51,7 +53,7 @@ export function IncomeButton() {
         description: response.data.message,
         variant: "default",
       });
-
+      handleSync()
       setIsSubmitting(false);
       setSource("");
       setAmount("");

@@ -7,25 +7,17 @@ import { ExpenseBar } from "./expensebar";
 import Reset from "./reset";
 import axios from "axios";
 import { History } from 'lucide-react';
+import { useFinance } from "@/context/FinanceContext";
 
 export default function Card() {
-  const [left, setLeft] = useState(0)
-  const [spent, setSpent] = useState(0)
-  
-  const getData = async () => {
-    try {
-      const response = await axios.get("/api/get-data")
-      setLeft(response.data.message.left)
-      setSpent(response.data.message.spent)
-    } catch (error) {
-      console.log(error);
-      alert("Something went wrong while Fetching Data")
-    }
-  }
+
+  const { expenses, handleSync } = useFinance();
+  const left = expenses?.left || 0;
+  const spent = expenses?.spent || 0;
 
   useEffect(() => {
-    getData()
-  }, [])
+    handleSync();
+  }, [handleSync]);
 
   return (
     <div className="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
