@@ -1,11 +1,10 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { IncomeButton } from "./incomebar";
 import { ExpenseBar } from "./expensebar";
 import Reset from "./reset";
-import axios from "axios";
 import { History } from 'lucide-react';
 import { useFinance } from "@/context/FinanceContext";
 

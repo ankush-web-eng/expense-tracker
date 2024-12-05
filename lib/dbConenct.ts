@@ -8,7 +8,6 @@ const connection : ConnectionObject = {}
 
 export default async function Connect() {
     if(connection.isConencted) {
-        console.log('Already connected to database');
         return;
     }
     try {

@@ -56,6 +56,8 @@ export default function VerifyAccount() {
           'An error occurred. Please try again.',
         variant: 'destructive',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

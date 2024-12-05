@@ -53,12 +53,7 @@ export function IncomeButton() {
         description: response.data.message,
         variant: "default",
       });
-      handleSync()
-      setIsSubmitting(false);
-      setSource("");
-      setAmount("");
-      setIsOpen(false);
-      router.refresh();
+      handleSync();
     } catch (error) {
       console.error("Error adding income:", error);
       const axiosError = error as AxiosError<ApiResponse>;
@@ -67,7 +62,11 @@ export function IncomeButton() {
         description: axiosError.response?.data.message || "An error occurred. Please try again.",
         variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
+      setSource("");
+      setAmount("");
+      setIsOpen(false);
     }
   };
 

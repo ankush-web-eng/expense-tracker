@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import { Loader2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,9 +25,8 @@ export function ExpenseBar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data: session } = useSession();
-  const router = useRouter();
   const { toast } = useToast();
-  const {handleSync} = useFinance()
+  const { handleSync } = useFinance()
 
   const handleSubmit = async () => {
     if (!source || !amount) {
@@ -52,8 +50,6 @@ export function ExpenseBar() {
         description: response.data.message,
       });
       handleSync()
-      setIsSubmitting(false);
-      setIsOpen(false);
     } catch (error) {
       console.error("Error adding expense:", error);
       const axiosError = error as AxiosError<ApiResponse>;
@@ -62,7 +58,11 @@ export function ExpenseBar() {
         description: axiosError.response?.data.message || "An error occurred. Please try again.",
         variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
+      setIsOpen(false);
+      setSource("");
+      setAmount("");
     }
   };
 

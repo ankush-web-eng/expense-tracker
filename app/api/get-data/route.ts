@@ -7,9 +7,9 @@ import UserModel from "@/model/User";
 import { revalidatePath } from "next/cache";
 
 export async function GET(req : NextRequest) {
-    await Connect()
-    const session = await getServerSession(authOptions)
-    const _user: User = session?.user
+    await Connect();
+    const session = await getServerSession(authOptions);
+    const _user: User = session?.user;
     try {
 
         if (!session || !_user) {
@@ -28,15 +28,15 @@ export async function GET(req : NextRequest) {
         }
 
         if (!user) {
-            return NextResponse.json({ success: false, message: "User not found" })
+            return NextResponse.json({ success: false, message: "User not found" });
         }
 
-        const path = req.nextUrl.searchParams.get('path') || "/dashboard"
-        revalidatePath(path)
+        const path = req.nextUrl.searchParams.get('path') || "/dashboard";
+        revalidatePath(path);
 
-        return NextResponse.json({ success: true, message: data })
+        return NextResponse.json({ success: true, message: data });
 
     } catch (error) {
-        return NextResponse.json({ success: false, message: "Couldn't Fetch Data!!" })
+        return NextResponse.json({ success: false, message: "Couldn't Fetch Data!!" });
     }
 }

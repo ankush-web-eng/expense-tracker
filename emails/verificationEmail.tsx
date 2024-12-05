@@ -52,7 +52,7 @@ import {
           </Row>
           <Row>
             <Button
-              href={`https://exp-trk.vercel.app/verify/${username}`}
+              href={`https://expenses.ankushsingh.tech/verify/${username}`}
               style={{ color: '#61dafb' }}
             >
               Verify here

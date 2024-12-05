@@ -18,13 +18,20 @@ export async function GET(request: NextRequest) {
       { status: 401 }
     );
   }
+
   const userId = new mongoose.Types.ObjectId(_user._id);
+
   try {
     const user = await UserModel.aggregate([
       { $match: { _id: userId } },
       { $unwind: '$expense' },
-      { $sort: { 'expense.createdAt': -1 } },
-      { $group: { _id: '$_id', expense: { $push: '$expense' } } },
+      { $sort: { 'expense.date': -1 } },
+      {
+        $group: {
+          _id: '$_id',
+          expense: { $push: '$expense' },
+        },
+      },
     ]).exec();
 
     if (!user || user.length === 0) {
@@ -34,14 +41,12 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const path = request.nextUrl.searchParams.get('path') || "/expenses"
-    revalidatePath(path)
+    const path = request.nextUrl.searchParams.get('path') || "/expenses";
+    revalidatePath(path);
 
     return Response.json(
       { message: user[0].expense },
-      {
-        status: 200,
-      }
+      { status: 200 }
     );
   } catch (error) {
     console.error('An unexpected error occurred:', error);
