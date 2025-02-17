@@ -1,5 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export type TransactionType = 'clothes' | 'food' | 'junk' | 'work' | 'other';
+
 export interface Income extends Document {
     source: string;
     amount: number;
@@ -9,20 +11,23 @@ export interface Income extends Document {
 const incomeSchema: Schema<Income> = new Schema({
     source: { type: String, required: true },
     amount: { type: Number, required: true },
-    date: { type: Date, required: true, default: Date.now }
+    date: { type: Date, required: true, default: Date.now },
 });
 
 export interface Expense extends Document {
     source: string;
     amount: number;
     date: Date;
+    type: TransactionType;
 }
 
 const expenseSchema: Schema<Expense> = new Schema({
     source: { type: String, required: true },
     amount: { type: Number, required: true },
-    date: { type: Date, required: true, default: Date.now }
+    date: { type: Date, required: true, default: Date.now },
+    type: { type: String, required: true, enum: ['clothes', 'food', 'junk', 'work', 'other'] }
 });
+
 export interface User extends Document {
     username: string;
     email: string;

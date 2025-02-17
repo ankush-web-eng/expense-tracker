@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Expense from "@/components/expense";
 import { Loader2, AlertCircle } from "lucide-react";
+import { TransactionType } from "@/model/User";
 
 interface Expense {
   source: string;
   amount: number;
   date: Date;
+  type: TransactionType;
 }
 
 export default function ExpensesPage() {

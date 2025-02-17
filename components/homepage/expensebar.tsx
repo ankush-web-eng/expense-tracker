@@ -17,19 +17,21 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "../ui/use-toast";
 import { ApiResponse } from "@/types/ApiResponse";
 import { useFinance } from "@/context/FinanceContext";
+import { TransactionType } from "@/model/User";
 
 export function ExpenseBar() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [source, setSource] = useState("");
   const [amount, setAmount] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [type, setType] = useState<TransactionType>('other');
 
   const { data: session } = useSession();
   const { toast } = useToast();
   const { handleSync } = useFinance()
 
   const handleSubmit = async () => {
-    if (!source || !amount) {
+    if (!source || !amount || !type) {
       toast({
         title: "Missing Information",
         description: "Please fill in all fields.",
@@ -44,6 +46,7 @@ export function ExpenseBar() {
         email: session?.user?.email,
         source,
         amount: parseInt(amount),
+        type,
       });
       toast({
         title: "Success",
@@ -63,6 +66,7 @@ export function ExpenseBar() {
       setIsOpen(false);
       setSource("");
       setAmount("");
+      setType('other');
     }
   };
 
@@ -107,19 +111,36 @@ export function ExpenseBar() {
               className="col-span-3"
             />
           </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="type" className="text-right">
+              Type
+            </Label>
+            <select
+              id="type"
+              value={type}
+              onChange={(e) => setType(e.target.value as TransactionType)}
+              className="col-span-3 bg-white border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 sm:text-sm"
+            >
+              <option value="clothes">Clothes</option>
+              <option value="food">Food</option>
+              <option value="junk">Junk</option>
+              <option value="work">Work</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full">
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Adding Expense...
-              </>
-            ) : (
-              "Add Expense"
-            )}
-          </Button>
-        </DialogFooter>
+            <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full">
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Adding Expense...
+                </>
+              ) : (
+                "Add Expense"
+              )}
+            </Button>
+          </DialogFooter>
       </DialogContent>
     </Dialog>
   );

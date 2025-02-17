@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const reqBody = await req.json();
 
     try {
-        const { source, amount, email } = reqBody;
+        const { source, amount, email, type } = reqBody;
 
         const user = await UserModel.findOne({ email });
         if (!user) {
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         const totolExpense = expense + amount;
 
         user.spent = totolExpense;
-        user.expense.push({ source, amount, date: new Date() } as Expense);
+        user.expense.push({ source, amount, type, date: new Date() } as Expense);
         await user.save();
 
         const path = req.nextUrl.searchParams.get('path') || "expenses";
